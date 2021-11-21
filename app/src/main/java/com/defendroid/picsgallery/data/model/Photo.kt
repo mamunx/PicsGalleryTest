@@ -1,6 +1,7 @@
 package com.defendroid.picsgallery.data.model
 
 import android.os.Parcelable
+import android.util.Log
 import com.defendroid.picsgallery.utils.AppConstants.THUMB_HEIGHT
 import com.defendroid.picsgallery.utils.AppConstants.THUMB_WIDTH
 import com.google.gson.annotations.SerializedName
@@ -20,11 +21,10 @@ data class Photo(
         return download_url?.let {
             try {
                 val urlArray = it.split("id/")
-                val urlFirstPart = urlArray[0]
-                val valueArray = urlArray[1].split("/")
-                val id = valueArray[0]
-
-                "$urlFirstPart$id/$THUMB_WIDTH/$THUMB_HEIGHT"
+                val baseUrl = urlArray[0]
+                val url = "${baseUrl}id/$id/$THUMB_WIDTH/$THUMB_HEIGHT"
+                Log.d("ThumbURL -> ", url)
+                url
             } catch (e: Exception) {
                 e.printStackTrace()
                 ""
