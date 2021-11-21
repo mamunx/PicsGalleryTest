@@ -1,6 +1,7 @@
 package com.defendroid.picsgallery.utils
 
 object AppConstants {
+    const val AUTHORITY = "com.defendroid.picsgallery.provider"
     const val THUMB_HEIGHT = "200"
     const val THUMB_WIDTH = "300"
 

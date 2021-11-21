@@ -3,4 +3,7 @@
     <string name="author_string">"Author: %s"</string>
     <string name="save">Save</string>
     <string name="share">Share</string>
+    <string name="share_image_title">Select an app to share Image</string>
+    <string name="something_wrong_message">Something went wrong!</string>
+    <string name="image_saved">Image Saved!</string>
 </resources>
