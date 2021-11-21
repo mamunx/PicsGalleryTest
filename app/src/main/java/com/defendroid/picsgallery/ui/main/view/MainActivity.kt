@@ -46,8 +46,8 @@ class MainActivity : AppCompatActivity(), ItemClickListener {
             when (it.status) {
                 Status.SUCCESS -> {
                     progressBar.visibility = View.GONE
-                    it.data?.let { movies ->
-                        renderList(movies)
+                    it.data?.let { photos ->
+                        renderList(photos)
                     }
                     recyclerView.visibility = View.VISIBLE
                 }
@@ -63,8 +63,8 @@ class MainActivity : AppCompatActivity(), ItemClickListener {
         })
     }
 
-    private fun renderList(movies: List<Photo>) {
-        adapter.addData(movies)
+    private fun renderList(photos: List<Photo>) {
+        adapter.addData(photos)
         adapter.notifyDataSetChanged()
     }
 

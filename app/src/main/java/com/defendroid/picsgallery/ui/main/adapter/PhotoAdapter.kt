@@ -11,7 +11,7 @@ import com.defendroid.picsgallery.ui.base.ItemClickListener
 import kotlinx.android.synthetic.main.item_photo.view.*
 
 class PhotoAdapter(
-    private val movies: ArrayList<Photo>,
+    private val photos: ArrayList<Photo>,
     private val itemClickListener: ItemClickListener?
 ) : RecyclerView.Adapter<PhotoAdapter.DataViewHolder>() {
 
@@ -39,14 +39,14 @@ class PhotoAdapter(
             )
         )
 
-    override fun getItemCount(): Int = movies.size
+    override fun getItemCount(): Int = photos.size
 
     override fun onBindViewHolder(holder: DataViewHolder, position: Int) {
-        holder.bind(movies[position], itemClickListener)
+        holder.bind(photos[position], itemClickListener)
     }
 
     fun addData(list: List<Photo>) {
-        movies.clear()
-        movies.addAll(list)
+        photos.clear()
+        photos.addAll(list)
     }
 }
