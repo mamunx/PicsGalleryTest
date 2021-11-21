@@ -17,7 +17,8 @@ class PhotoAdapter(
 
     class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(photo: Photo, clickListener: ItemClickListener?) {
-            itemView.tv_author_name.text = photo.author ?: ""
+
+            itemView.tv_author_name.text = photo.author
 
             Glide.with(itemView.iv_photo.context)
                 .load(photo.getThumbnailUrl())

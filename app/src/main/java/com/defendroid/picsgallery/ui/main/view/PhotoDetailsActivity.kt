@@ -1,6 +1,7 @@
 package com.defendroid.picsgallery.ui.main.view
 
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -28,9 +29,17 @@ class PhotoDetailsActivity : AppCompatActivity() {
                 .error(R.drawable.ic_error)
                 .into(iv_photo)
 
-            tv_author_name.text = it.author
+            val author = String.format(getString(R.string.author_string), it.author)
+            tv_author_name.text = author
         }
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
@@ -38,6 +47,17 @@ class PhotoDetailsActivity : AppCompatActivity() {
                 onBackPressed()
                 true
             }
+
+            R.id.menu_save -> {
+                // todo
+                true
+            }
+
+            R.id.menu_share -> {
+                // todo
+                true
+            }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
