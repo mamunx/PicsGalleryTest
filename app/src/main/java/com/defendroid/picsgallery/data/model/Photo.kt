@@ -2,13 +2,17 @@ package com.defendroid.picsgallery.data.model
 
 import android.os.Parcelable
 import android.util.Log
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.defendroid.picsgallery.utils.AppConstants.THUMB_HEIGHT
 import com.defendroid.picsgallery.utils.AppConstants.THUMB_WIDTH
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
+@Entity(tableName = "photos")
 @Parcelize
 data class Photo(
+    @PrimaryKey
     @SerializedName("id") val id: Long?,
     @SerializedName("author") val author: String?,
     @SerializedName("width") val width: Int?,
