@@ -21,5 +21,5 @@ import com.defendroid.picsgallery.data.model.Photo
 import kotlinx.coroutines.flow.Flow
 
 interface PhotoRepositoryInterface {
-    fun getPhotos(subReddit: String, pageSize: Int): Flow<PagingData<Photo>>
+    fun getPhotosPaged(pageSize: Int): Flow<PagingData<Photo>>
 }

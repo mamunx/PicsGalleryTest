@@ -25,11 +25,11 @@ import com.defendroid.picsgallery.data.model.PhotoRemoteKey
 @Dao
 interface PhotoRemoteKeyDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(keys: PhotoRemoteKey)
+    fun insert(keys: PhotoRemoteKey)
 
     @Query("SELECT * FROM remote_keys")
-    suspend fun getRemoteKeys(): PhotoRemoteKey
+    fun getRemoteKeys(): PhotoRemoteKey
 
     @Query("DELETE FROM remote_keys")
-    suspend fun deleteKeys()
+    fun deleteKeys()
 }

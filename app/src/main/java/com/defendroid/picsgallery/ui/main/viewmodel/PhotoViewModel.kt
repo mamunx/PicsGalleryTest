@@ -3,12 +3,14 @@ package com.defendroid.picsgallery.ui.main.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.paging.cachedIn
 import com.defendroid.picsgallery.data.model.Photo
 import com.defendroid.picsgallery.data.repository.PhotoRepository
 import com.defendroid.picsgallery.utils.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 class PhotoViewModel(private val photoRepository: PhotoRepository) : ViewModel() {
 
@@ -24,7 +26,7 @@ class PhotoViewModel(private val photoRepository: PhotoRepository) : ViewModel()
     private fun fetchPhotos() {
         photoListLiveData.postValue(Resource.loading(null))
         compositeDisposable.add(
-            photoRepository.getPhotoList()
+            photoRepository.getPhotos()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -38,6 +40,9 @@ class PhotoViewModel(private val photoRepository: PhotoRepository) : ViewModel()
                 })
         )
     }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val posts = photoRepository.getPhotosPaged(30)
 
     override fun onCleared() {
         super.onCleared()

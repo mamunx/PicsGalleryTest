@@ -26,11 +26,11 @@ import com.defendroid.picsgallery.data.model.Photo
 @Dao
 interface PhotosDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(posts: List<Photo>)
+    fun insertAll(posts: List<Photo>)
 
     @Query("SELECT * FROM photos ORDER BY id ASC")
-    fun getAllPhotos(subreddit: String): PagingSource<Int, Photo>
+    fun getAllPhotos(): PagingSource<Int, Photo>
 
-    @Query("DELETE FROM photos WHERE id = :id")
-    suspend fun deleteById(id: Long)
+    @Query("DELETE FROM photos")
+    fun deleteAllPhotos()
 }

@@ -8,17 +8,18 @@ import com.defendroid.picsgallery.data.db.PhotoDb
 import com.defendroid.picsgallery.data.model.Photo
 import io.reactivex.Single
 
-class PhotoRepository(private val db: PhotoDb, private val apiHelper: ApiHelper) :PhotoRepositoryInterface{
+class PhotoRepository(private val db: PhotoDb, private val apiHelper: ApiHelper) :
+    PhotoRepositoryInterface {
 
-    fun getPhotoList(): Single<List<Photo>> {
-        return apiHelper.getPhotoList()
+    fun getPhotos(): Single<List<Photo>> {
+        return apiHelper.getPhotos()
     }
 
     @OptIn(ExperimentalPagingApi::class)
-    override fun getPhotos(subReddit: String, pageSize: Int) = Pager(
+    override fun getPhotosPaged(pageSize: Int) = Pager(
         config = PagingConfig(pageSize),
-        remoteMediator = PageKeyedRemoteMediator(db, redditApi, subReddit)
+        remoteMediator = PageKeyedRemoteMediator(db, apiHelper)
     ) {
-        db.posts().postsBySubreddit(subReddit)
+        db.getPhotoDao().getAllPhotos()
     }.flow
 }

@@ -4,5 +4,6 @@ import com.defendroid.picsgallery.data.model.Photo
 import io.reactivex.Single
 
 interface ApiService {
-    fun getPhotoList(): Single<List<Photo>>
+    fun getPhotos(): Single<List<Photo>>
+    fun getPhotosPaging(limit: String?, pageNumber: String?): Single<List<Photo>>
 }

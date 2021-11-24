@@ -20,7 +20,8 @@ import com.defendroid.picsgallery.utils.AppConstants.KEY_SELECTED_PHOTO
 import com.defendroid.picsgallery.utils.Status
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), ItemClickListener {
+class MainActivityPaging : AppCompatActivity(), ItemClickListener {
+
     private lateinit var viewModel: PhotoViewModel
     private lateinit var adapter: PhotoAdapter
 

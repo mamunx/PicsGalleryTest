@@ -5,11 +5,16 @@ import androidx.paging.LoadType
 import androidx.paging.LoadType.*
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
+import androidx.room.withTransaction
+import com.bumptech.glide.load.HttpException
 import com.defendroid.picsgallery.data.api.ApiHelper
 import com.defendroid.picsgallery.data.db.PhotoDb
 import com.defendroid.picsgallery.data.db.PhotoRemoteKeyDao
 import com.defendroid.picsgallery.data.db.PhotosDao
 import com.defendroid.picsgallery.data.model.Photo
+import com.defendroid.picsgallery.data.model.PhotoRemoteKey
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import java.io.IOException
 
 @OptIn(ExperimentalPagingApi::class)
@@ -47,37 +52,47 @@ class PageKeyedRemoteMediator(
                     // We must explicitly check if the page key is null when appending, since the
                     // Reddit API informs the end of the list by returning null for page key, but
                     // passing a null key to Reddit API will fetch the initial page.
-                    if (remoteKey.nextPageKey == null) {
+                    if (remoteKey.nextPage == null) {
                         return MediatorResult.Success(endOfPaginationReached = true)
                     }
 
-                    remoteKey.nextPageKey
+                    remoteKey.nextPage
                 }
             }
 
-            val data = apiHelper.getPhotoList(
-                subreddit = subredditName,
-                after = loadKey,
-                before = null,
+            val data = apiHelper.getPhotoPaging(
                 limit = when (loadType) {
                     REFRESH -> state.config.initialLoadSize
                     else -> state.config.pageSize
-                }
-            ).data
+                }.toString(),
+                pageNumber = loadKey
+            )
 
-            val items = data.children.map { it.data }
+            var items : List<Photo>? = null
+
+            data.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    items = it
+                }, {
+                    it.printStackTrace()
+                })
 
             db.withTransaction {
                 if (loadType == REFRESH) {
-                    photoDao.deleteBySubreddit(subredditName)
-                    remoteKeyDao.deleteBySubreddit(subredditName)
+                    photoDao.deleteAllPhotos()
+                    remoteKeyDao.deleteKeys()
                 }
 
-                remoteKeyDao.insert(SubredditRemoteKey(subredditName, data.after))
-                photoDao.insertAll(items)
+                val nextPage = loadKey?.toInt() ?: 0
+                remoteKeyDao.insert(PhotoRemoteKey(nextPage = nextPage.toString()))
+
+                items?.let { list->
+                    photoDao.insertAll(list)
+                }
             }
 
-            return MediatorResult.Success(endOfPaginationReached = items.isEmpty())
+            return MediatorResult.Success(endOfPaginationReached = items?.isEmpty() == true)
         } catch (e: IOException) {
             return MediatorResult.Error(e)
         } catch (e: HttpException) {

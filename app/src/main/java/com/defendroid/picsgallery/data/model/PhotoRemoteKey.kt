@@ -22,6 +22,6 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "remote_keys")
 data class PhotoRemoteKey(
     @PrimaryKey(autoGenerate = true)
-    val id: Long,
-    val nextPageUrl: String?
+    val id: Long = 0,
+    val nextPage: String?
 )
