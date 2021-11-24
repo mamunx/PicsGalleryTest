@@ -1,9 +1,7 @@
-plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
-    id 'kotlin-android-extensions'
-    id 'kotlin-kapt'
-}
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 ext {
     ktx_version = '1.7.0'
@@ -15,7 +13,7 @@ ext {
     rxjava_version = '2.2.21'
     rxandroid_version = '2.1.1'
     compiler_version = '3.2.0-alpha10'
-    coroutine_version = '1.4.1'
+    coroutine_version = '1.5.2'
     room_version = "2.3.0"
 
 }
@@ -38,15 +36,40 @@ android {
     }
 
     buildTypes {
-        release {
+
+        debug {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField('String', 'BASE_URL', '"https://picsum.photos/"')
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField('boolean', 'IS_LOG', "true")
+            debuggable true
         }
+
+        staging {
+            minifyEnabled false
+            buildConfigField('String', 'BASE_URL', '"https://picsum.photos/"')
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField('boolean', 'IS_LOG', "false")
+            zipAlignEnabled true
+            debuggable true
+        }
+
+        release {
+            minifyEnabled true
+            buildConfigField('String', 'BASE_URL', '"https://picsum.photos/"')
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField('boolean', 'IS_LOG', "false")
+            zipAlignEnabled true
+            debuggable false
+        }
+
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
